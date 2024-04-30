@@ -13,7 +13,7 @@ variable "resource_group_name" {
 
 variable "no_of_vm" {
   description = "No of VMs."
-  default     = 1
+  default     = 2
 }
 
 variable "vm_size" {
