@@ -61,13 +61,12 @@ source "azure-arm" "my-image" {
 }
 
 build {
-  sources = [
-    "source.azure-arm.example"
-  ]
+  sources = ["source.azure-arm.my-image"]
 
   provisioner "shell" {
-    inline = [
-      "echo 'Hello, World!'"
-    ]
+    execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
+    inline          = ["apt-get update", "apt-get upgrade -y", "apt-get -y install nginx", "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync", "echo 'Hello, World!' > index.html", "nohup busybox httpd -f -p 80 &"]
+    inline_shebang  = "/bin/sh -x"
   }
+
 }
